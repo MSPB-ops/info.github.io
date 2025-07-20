@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบข้อมูลท้องถิ่นและความปลอดภัย สภ.เมืองสุพรรณบุรี ปี 2568</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #1abc9c;
+        }
+        
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://example.com/suphan-bg.jpg') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            margin: 0;
+            font-weight: 500;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            margin: 10px 0 0;
+            font-weight: 300;
+            font-size: 1.1rem;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 18px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-header i {
+            font-size: 1.2rem;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .info-title {
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+        
+        .info-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--secondary);
+            border-radius: 4px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .map-container {
+            height: 350px;
+            background-color: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .tab-container {
+            margin-top: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--secondary);
+            color: var(--secondary);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: var(--light);
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .badge-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .badge-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .badge-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .badge-info {
+            background-color: var(--info);
+            color: white;
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            font-family: 'Kanit', sans-serif;
+        }
+        
+        .search-bar {
+            margin: 25px 0;
+            display: flex;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px 0 0 6px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .search-bar button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-bar button:hover {
+            background-color: #2980b9;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .footer-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .footer-section p {
+            margin: 5px 0;
+            color: #bbb;
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            color: #bbb;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-section {
+                flex-direction: column;
+            }
+            
+            .filter-item, .footer-section {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>ระบบข้อมูลท้องถิ่นและความปลอดภัย</h1>
+            <p class="subtitle">สภ.เมืองสุพรรณบุรี ปี พ.ศ. 2568</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" placeholder="ค้นหาข้อมูล...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="filter-section">
+            <div class="filter-item">
+                <select>
+                    <option value="">ทั้งหมด</option>
+                    <option value="population">ประชากร</option>
+                    <option value="security">ความปลอดภัย</option>
+                    <option value="infrastructure">โครงสร้างพื้นฐาน</option>
+                    <option value="business">ธุรกิจและสถานประกอบการ</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <select>
+                    <option value="">ทั้งหมด</option>
+                    <option value="tambon1">ท่าพี่เลี้ยง</option>
+                    <option value="tambon2">สวนแตง</option>
+                    <option value="tambon3">ท่าระหัด</option>
+                    <option value="tambon4">รั้วใหญ่</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <select>
+                    <option value="">ทั้งหมด</option>
+                    <option value="high">ข้อมูลสำคัญ</option>
+                    <option value="medium">ข้อมูลทั่วไป</option>
+                    <option value="low">ข้อมูลเสริม</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-users"></i> ประชากรและกำลังพล</span>
+                </div>
+                <div class="card-body">
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value">138,226</div>
+                            <div class="stat-label">ประชากรทั้งหมด</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">194</div>
+                            <div class="stat-label">กำลังพลตำรวจ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2,686</div>
+                            <div class="stat-label">อาสาสมัคร</div>
+                        </div>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-title">พื้นที่ทั้งหมด</div>
+                            <div class="info-value">423.162 ตร.กม.</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-title">ประชากรชาย</div>
+                            <div class="info-value">66,103 คน</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-title">ประชากรหญิง</div>
+                            <div class="info-value">72,123 คน</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-title">สัดส่วนพื้นที่/ตำรวจ</div>
+                            <div class="info-value">1.87 ตร.กม./นาย</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-shield-alt"></i> ระบบความปลอดภัย</span>
+                </div>
+                <div class="card-body">
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">ตู้ยามสายตรวจ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">จุดเสี่ยงอาชญากรรม</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">26,316</div>
+                            <div class="stat-label">อาวุธปืนจดทะเบียน</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>กำลังพลสายป้องกันปราบปราม</span>
+                            <span>105/194 (54%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 54%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>กำลังพลสายสืบสวน</span>
+                            <span>25/194 (13%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 13%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>กำลังพลสายจราจร</span>
+                            <span>30/194 (15%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 15%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-map-marked-alt"></i> แผนที่พื้นที่</span>
+                </div>
+                <div class="card-body">
+                    <div class="map-container">
+                        <!-- แผนที่ Google Maps จะถูกแทรกที่นี่ -->
+                        <img src="https://maps.googleapis.com/maps/api/staticmap?center=สุพรรณบุรี&zoom=12&size=600x350&maptype=roadmap&markers=color:red%7Cสุพรรณบุรี&key=YOUR_API_KEY" alt="แผนที่สุพรรณบุรี" style="width:100%; height:100%; object-fit:cover;">
+                        <div class="map-overlay">
+                            <div><i class="fas fa-map-marker-alt"></i> พื้นที่: 423.162 ตร.กม.</div>
+                            <div><i class="fas fa-home"></i> ชุมชน: 16 แห่ง</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <span class="badge badge-primary"><i class="fas fa-utensils"></i> ร้านอาหาร: 11</span>
+                        <span class="badge badge-success"><i class="fas fa-store"></i> ร้านสะดวกซื้อ: 42</span>
+                        <span class="badge badge-warning"><i class="fas fa-gem"></i> ร้านทอง: 39</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title"><i class="fas fa-chart-pie"></i> สถิติสำคัญ</h2>
+        
+        <div class="tab-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="infrastructure">โครงสร้างพื้นฐาน</div>
+                <div class="tab" data-tab="business">ธุรกิจและสถานประกอบการ</div>
+                <div class="tab" data-tab="security">ความปลอดภัย</div>
+                <div class="tab" data-tab="population">ประชากร</div>
+            </div>
+            
+            <div class="tab-content active" id="infrastructure">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-title">สถานีตำรวจ</div>
+                                <div class="info-value">1 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">หน่วยบริการประชาชน</div>
+                                <div class="info-value">2 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานีขนส่ง</div>
+                                <div class="info-value">1 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานีรถไฟ</div>
+                                <div class="info-value">1 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานพยาบาลรัฐบาล</div>
+                                <div class="info-value">24 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานพยาบาลเอกชน</div>
+                                <div class="info-value">2 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานีบริการน้ำมัน</div>
+                                <div class="info-value">23 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานีบริการก๊าซ</div>
+                                <div class="info-value">7 แห่ง</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="business">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-title">สถาบันการเงิน</div>
+                                <div class="info-value">85 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">ร้านทองและอัญมณี</div>
+                                <div class="info-value">39 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">โรงรับจำนำ</div>
+                                <div class="info-value">4 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">ศูนย์การค้า/ห้างสรรพสินค้า</div>
+                                <div class="info-value">6 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">ตลาดสด/ตลาดนัด</div>
+                                <div class="info-value">13 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">ร้านสะดวกซื้อ</div>
+                                <div class="info-value">42 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">ร้านอาหาร/ภัตตาคาร</div>
+                                <div class="info-value">11 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานบริการ</div>
+                                <div class="info-value">10 แห่ง</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="security">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-title">อาวุธปืนจดทะเบียน</div>
+                                <div class="info-value">26,316 กระบอก</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">ร้านค้าอาวุธปืน</div>
+                                <div class="info-value">1 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">บุคคลพ้นโทษ</div>
+                                <div class="info-value">117 ราย</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">คดียาเสพติด</div>
+                                <div class="info-value">310 ราย</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">บริษัทรักษาความปลอดภัย</div>
+                                <div class="info-value">6 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">พื้นที่เสี่ยงอาชญากรรม</div>
+                                <div class="info-value">5 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">ตู้ ATM</div>
+                                <div class="info-value">61 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานที่พักอาศัย</div>
+                                <div class="info-value">32,789 แห่ง</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="population">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-title">เขตการปกครอง</div>
+                                <div class="info-value">140 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">เทศบาล</div>
+                                <div class="info-value">8 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">อบต.</div>
+                                <div class="info-value">11 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">หมู่บ้าน</div>
+                                <div class="info-value">102 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">ศาสนสถาน</div>
+                                <div class="info-value">82 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานศึกษา</div>
+                                <div class="info-value">61 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สถานที่ท่องเที่ยว</div>
+                                <div class="info-value">4 แห่ง</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-title">สวนสาธารณะ</div>
+                                <div class="info-value">1 แห่ง</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title"><i class="fas fa-table"></i> ตารางข้อมูลสถิติ</h2>
+        
+        <div class="card">
+            <div class="card-header">
+                <span><i class="fas fa-building"></i> สถานประกอบการสำคัญ</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ประเภท</th>
+                                <th>จำนวน (แห่ง)</th>
+                                <th>หมายเหตุ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ร้านทองและอัญมณี</td>
+                                <td>39</td>
+                                <td><span class="badge badge-warning">จุดเสี่ยง</span></td>
+                            </tr>
+                            <tr>
+                                <td>สถาบันการเงิน</td>
+                                <td>85</td>
+                                <td><span class="badge badge-warning">จุดเสี่ยง</span></td>
+                            </tr>
+                            <tr>
+                                <td>ร้านสะดวกซื้อ</td>
+                                <td>42</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>สถานีบริการน้ำมัน</td>
+                                <td>23</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>สถานบริการ</td>
+                                <td>10</td>
+                                <td><span class="badge badge-danger">เฝ้าระวัง</span></td>
+                            </tr>
+                            <tr>
+                                <td>โรงงานผลิตดอกไม้ไฟ</td>
+                                <td>7</td>
+                                <td><span class="badge badge-danger">เฝ้าระวัง</span></td>
+                            </tr>
+                            <tr>
+                                <td>ร้านค้าอาวุธปืน</td>
+                                <td>1</td>
+                                <td><span class="badge badge-danger">เฝ้าระวัง</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top: 30px;">
+            <div class="card-header">
+                <span><i class="fas fa-school"></i> สถานศึกษา</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ระดับการศึกษา</th>
+                                <th>รัฐบาล</th>
+                                <th>เอกชน</th>
+                                <th>รวม</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>อุดมศึกษา</td>
+                                <td>2</td>
+                                <td>0</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>อาชีวศึกษา</td>
+                                <td>3</td>
+                                <td>1</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>มัธยมศึกษา</td>
+                                <td>4</td>
+                                <td>1</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>ประถมศึกษา</td>
+                                <td>50</td>
+                                <td>1</td>
+                                <td>51</td>
+                            </tr>
+                            <tr>
+                                <td><strong>รวมทั้งหมด</strong></td>
+                                <td><strong>59</strong></td>
+                                <td><strong>3</strong></td>
+                                <td><strong>62</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-info">
+                <div class="footer-section">
+                    <h3>ติดต่อเรา</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> สภ.เมืองสุพรรณบุรี</p>
+                    <p><i class="fas fa-phone"></i> 035-XXXXXX</p>
+                    <p><i class="fas fa-envelope"></i> contact@suphanpolice.go.th</p>
+                </div>
+                <div class="footer-section">
+                    <h3>ข้อมูลสำคัญ</h3>
+                    <p><i class="fas fa-user-shield"></i> กำลังพล: 194 นาย</p>
+                    <p><i class="fas fa-home"></i> ชุมชน: 16 แห่ง</p>
+                    <p><i class="fas fa-exclamation-triangle"></i> จุดเสี่ยง: 5 แห่ง</p>
+                </div>
+                <div class="footer-section">
+                    <h3>ลิงก์ที่เกี่ยวข้อง</h3>
+                    <p><i class="fas fa-globe"></i> เว็บไซต์จังหวัดสุพรรณบุรี</p>
+                    <p><i class="fas fa-shield-alt"></i> สำนักงานตำรวจแห่งชาติ</p>
+                    <p><i class="fas fa-phone-alt"></i> ศูนย์ช่วยเหลือฉุกเฉิน 191</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 สถานีตำรวจภูธรเมืองสุพรรณบุรี. สงวนลิขสิทธิ์.</p>
+                <p>ข้อมูลอัปเดตล่าสุด: มีนาคม 2568</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // JavaScript สำหรับการทำงานแบบไดนามิก
+        document.addEventListener('DOMContentLoaded', function() {
+            // ระบบแท็บ
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // ลบ active class จากแท็บทั้งหมด
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // เพิ่ม active class ให้แท็บที่คลิก
+                    tab.classList.add('active');
+                    
+                    // ซ่อนเนื้อหาทั้งหมด
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // แสดงเนื้อหาของแท็บที่เลือก
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // สามารถเพิ่มฟังก์ชันการค้นหาและการกรองข้อมูลที่นี่
+        });
+    </script>
+</body>
+</html>
