@@ -6,6 +6,7 @@
     <title>ระบบข้อมูลท้องถิ่นและความปลอดภัย สภ.เมืองสุพรรณบุรี ปี 2568</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
             --primary: #2c3e50;
@@ -52,7 +53,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('https://example.com/suphan-bg.jpg') center/cover;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Suphan_Buri_City_Pillar_Shrine.jpg/1200px-Suphan_Buri_City_Pillar_Shrine.jpg') center/cover;
             opacity: 0.1;
             z-index: 0;
         }
@@ -204,7 +205,7 @@
             padding: 10px 15px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            z-index: 1;
+            z-index: 1000;
         }
         
         .section-title {
@@ -306,27 +307,6 @@
             color: white;
         }
         
-        .filter-section {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-item {
-            flex: 1;
-            min-width: 200px;
-        }
-        
-        select, input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            background-color: white;
-            font-family: 'Kanit', sans-serif;
-        }
-        
         .search-bar {
             margin: 25px 0;
             display: flex;
@@ -399,16 +379,47 @@
             font-size: 14px;
         }
         
+        /* Custom Leaflet Popup Styles */
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px !important;
+            font-family: 'Kanit', sans-serif;
+        }
+        
+        .leaflet-popup-content {
+            margin: 12px 18px !important;
+        }
+        
+        .police-popup h3 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+        
+        .police-popup p {
+            margin: 8px 0;
+        }
+        
+        .call-button {
+            display: inline-block;
+            background-color: var(--success);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .call-button:hover {
+            background-color: #27ae60;
+        }
+        
         @media (max-width: 768px) {
             .dashboard {
                 grid-template-columns: 1fr;
             }
             
-            .filter-section {
-                flex-direction: column;
-            }
-            
-            .filter-item, .footer-section {
+            .footer-section {
                 width: 100%;
             }
             
@@ -434,35 +445,6 @@
         <div class="search-bar">
             <input type="text" placeholder="ค้นหาข้อมูล...">
             <button><i class="fas fa-search"></i></button>
-        </div>
-        
-        <div class="filter-section">
-            <div class="filter-item">
-                <select>
-                    <option value="">ทั้งหมด</option>
-                    <option value="population">ประชากร</option>
-                    <option value="security">ความปลอดภัย</option>
-                    <option value="infrastructure">โครงสร้างพื้นฐาน</option>
-                    <option value="business">ธุรกิจและสถานประกอบการ</option>
-                </select>
-            </div>
-            <div class="filter-item">
-                <select>
-                    <option value="">ทั้งหมด</option>
-                    <option value="tambon1">ท่าพี่เลี้ยง</option>
-                    <option value="tambon2">สวนแตง</option>
-                    <option value="tambon3">ท่าระหัด</option>
-                    <option value="tambon4">รั้วใหญ่</option>
-                </select>
-            </div>
-            <div class="filter-item">
-                <select>
-                    <option value="">ทั้งหมด</option>
-                    <option value="high">ข้อมูลสำคัญ</option>
-                    <option value="medium">ข้อมูลทั่วไป</option>
-                    <option value="low">ข้อมูลเสริม</option>
-                </select>
-            </div>
         </div>
         
         <div class="dashboard">
@@ -560,13 +542,12 @@
                     <span><i class="fas fa-map-marked-alt"></i> แผนที่พื้นที่</span>
                 </div>
                 <div class="card-body">
-                    <div class="map-container">
-                        <!-- แผนที่ Google Maps จะถูกแทรกที่นี่ -->
-                        <img src="https://maps.googleapis.com/maps/api/staticmap?center=สุพรรณบุรี&zoom=12&size=600x350&maptype=roadmap&markers=color:red%7Cสุพรรณบุรี&key=YOUR_API_KEY" alt="แผนที่สุพรรณบุรี" style="width:100%; height:100%; object-fit:cover;">
-                        <div class="map-overlay">
-                            <div><i class="fas fa-map-marker-alt"></i> พื้นที่: 423.162 ตร.กม.</div>
-                            <div><i class="fas fa-home"></i> ชุมชน: 16 แห่ง</div>
-                        </div>
+                    <div class="map-container" id="map">
+                        <!-- แผนที่ Leaflet จะถูกแทรกที่นี่ -->
+                    </div>
+                    <div class="map-overlay">
+                        <div><i class="fas fa-map-marker-alt"></i> พื้นที่: 423.162 ตร.กม.</div>
+                        <div><i class="fas fa-home"></i> ชุมชน: 16 แห่ง</div>
                     </div>
                     <div style="display: flex; gap: 10px; margin-top: 10px;">
                         <span class="badge badge-primary"><i class="fas fa-utensils"></i> ร้านอาหาร: 11</span>
@@ -869,7 +850,7 @@
                 <div class="footer-section">
                     <h3>ติดต่อเรา</h3>
                     <p><i class="fas fa-map-marker-alt"></i> สภ.เมืองสุพรรณบุรี</p>
-                    <p><i class="fas fa-phone"></i> 035-XXXXXX</p>
+                    <p><i class="fas fa-phone"></i> 035-522-100</p>
                     <p><i class="fas fa-envelope"></i> contact@suphanpolice.go.th</p>
                 </div>
                 <div class="footer-section">
@@ -892,6 +873,7 @@
         </div>
     </footer>
     
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // JavaScript สำหรับการทำงานแบบไดนามิก
         document.addEventListener('DOMContentLoaded', function() {
@@ -914,7 +896,124 @@
                 });
             });
             
-            // สามารถเพิ่มฟังก์ชันการค้นหาและการกรองข้อมูลที่นี่
+            // ระบบแผนที่ Leaflet
+            const map = L.map('map').setView([14.4745, 100.1175], 13);
+            
+            // เพิ่มแผนที่ฐานจาก OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // เพิ่มหมุดสถานีตำรวจเมืองสุพรรณบุรี
+            const policeStation = L.marker([14.4745, 100.1175], {
+                icon: L.divIcon({
+                    className: 'police-icon',
+                    html: '<i class="fas fa-shield-alt" style="color: #e74c3c; font-size: 24px;"></i>',
+                    iconSize: [30, 30]
+                })
+            }).addTo(map);
+            
+            // เพิ่ม Popup สำหรับสถานีตำรวจ
+            policeStation.bindPopup(`
+                <div class="police-popup">
+                    <h3>สถานีตำรวจภูธรเมืองสุพรรณบุรี</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 ถนนพระราม 2 ตำบลท่าพี่เลี้ยง อำเภอเมืองสุพรรณบุรี จังหวัดสุพรรณบุรี 72000</p>
+                    <p><i class="fas fa-phone"></i> โทรศัพท์: 035-522-100</p>
+                    <p><i class="fas fa-clock"></i> เปิดบริการ: 24 ชั่วโมง</p>
+                    <a href="tel:035522100" class="call-button"><i class="fas fa-phone"></i> โทรติดต่อ</a>
+                </div>
+            `);
+            
+            // เพิ่มหมุดจุดสำคัญอื่นๆ
+            const importantPlaces = [
+                {
+                    name: "โรงพยาบาลสุพรรณบุรี",
+                    position: [14.4812, 100.1098],
+                    type: "hospital",
+                    phone: "035-525-555"
+                },
+                {
+                    name: "สถานีขนส่งสุพรรณบุรี",
+                    position: [14.4673, 100.1217],
+                    type: "bus",
+                    phone: "035-522-230"
+                },
+                {
+                    name: "สถานีรถไฟสุพรรณบุรี",
+                    position: [14.4719, 100.1246],
+                    type: "train",
+                    phone: "035-521-044"
+                }
+            ];
+            
+            importantPlaces.forEach(place => {
+                let iconClass, iconColor;
+                
+                switch(place.type) {
+                    case "hospital":
+                        iconClass = "fa-hospital";
+                        iconColor = "#e74c3c";
+                        break;
+                    case "bus":
+                        iconClass = "fa-bus";
+                        iconColor = "#3498db";
+                        break;
+                    case "train":
+                        iconClass = "fa-train";
+                        iconColor = "#2c3e50";
+                        break;
+                    default:
+                        iconClass = "fa-map-marker";
+                        iconColor = "#2ecc71";
+                }
+                
+                const marker = L.marker(place.position, {
+                    icon: L.divIcon({
+                        className: 'place-icon',
+                        html: `<i class="fas ${iconClass}" style="color: ${iconColor}; font-size: 20px;"></i>`,
+                        iconSize: [25, 25]
+                    })
+                }).addTo(map);
+                
+                marker.bindPopup(`
+                    <div class="place-popup">
+                        <h3>${place.name}</h3>
+                        <p><i class="fas fa-phone"></i> โทรศัพท์: ${place.phone}</p>
+                        <a href="tel:${place.phone.replace(/-/g, '')}" class="call-button"><i class="fas fa-phone"></i> โทรติดต่อ</a>
+                    </div>
+                `);
+            });
+            
+            // เพิ่มเลเยอร์แสดงพื้นที่เสี่ยง
+            const dangerZones = [
+                {
+                    name: "ชุมชนหลังตลาดสด",
+                    position: [14.4765, 100.1198],
+                    radius: 200,
+                    reason: "อาชญากรรมลักทรัพย์"
+                },
+                {
+                    name: "ซอยโรงเรียนเก่า",
+                    position: [14.4723, 100.1152],
+                    radius: 150,
+                    reason: "ยาเสพติด"
+                }
+            ];
+            
+            dangerZones.forEach(zone => {
+                L.circle(zone.position, {
+                    color: '#e74c3c',
+                    fillColor: '#e74c3c',
+                    fillOpacity: 0.2,
+                    radius: zone.radius
+                }).addTo(map).bindPopup(`
+                    <div class="danger-popup">
+                        <h3>${zone.name}</h3>
+                        <p><i class="fas fa-exclamation-triangle"></i> จุดเสี่ยง: ${zone.reason}</p>
+                        <p><i class="fas fa-info-circle"></i> รายงานล่าสุด: มีนาคม 2568</p>
+                    </div>
+                `);
+            });
         });
     </script>
 </body>
