@@ -307,37 +307,39 @@
             color: white;
         }
         
-        .search-bar {
-            margin: 25px 0;
-            display: flex;
+        /* Custom Leaflet Popup Styles */
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px !important;
+            font-family: 'Kanit', sans-serif;
         }
         
-        .search-bar input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px 0 0 6px;
-            font-size: 16px;
-            outline: none;
+        .leaflet-popup-content {
+            margin: 12px 18px !important;
         }
         
-        .search-bar button {
-            background-color: var(--secondary);
+        .police-popup h3 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+        
+        .police-popup p {
+            margin: 8px 0;
+        }
+        
+        .call-button {
+            display: inline-block;
+            background-color: var(--success);
             color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 0 6px 6px 0;
-            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 10px;
             transition: background-color 0.3s;
         }
         
-        .search-bar button:hover {
-            background-color: #2980b9;
-        }
-        
-        .chart-container {
-            height: 300px;
-            margin-top: 20px;
+        .call-button:hover {
+            background-color: #27ae60;
         }
         
         footer {
@@ -379,41 +381,6 @@
             font-size: 14px;
         }
         
-        /* Custom Leaflet Popup Styles */
-        .leaflet-popup-content-wrapper {
-            border-radius: 8px !important;
-            font-family: 'Kanit', sans-serif;
-        }
-        
-        .leaflet-popup-content {
-            margin: 12px 18px !important;
-        }
-        
-        .police-popup h3 {
-            color: var(--primary);
-            margin-top: 0;
-            font-size: 1.1rem;
-        }
-        
-        .police-popup p {
-            margin: 8px 0;
-        }
-        
-        .call-button {
-            display: inline-block;
-            background-color: var(--success);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 4px;
-            text-decoration: none;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        
-        .call-button:hover {
-            background-color: #27ae60;
-        }
-        
         @media (max-width: 768px) {
             .dashboard {
                 grid-template-columns: 1fr;
@@ -442,11 +409,6 @@
     </header>
     
     <div class="container">
-        <div class="search-bar">
-            <input type="text" placeholder="ค้นหาข้อมูล...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-        
         <div class="dashboard">
             <div class="card">
                 <div class="card-header">
